@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"monkey/repl"
+	"github.com/weakphish/monkey-interpreter/repl"
 	"os"
 	"os/user"
 )

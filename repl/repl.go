@@ -3,10 +3,10 @@ package repl
 import (
 	"bufio"
 	"fmt"
-	"go/token"
 	"io"
 
 	"github.com/weakphish/monkey-interpreter/lexer"
+	"github.com/weakphish/monkey-interpreter/token"
 )
 
 const PROMPT = ">>"
@@ -23,7 +23,7 @@ func Start(in io.Reader, out io.Writer) {
 		line := scanner.Text()
 		l := lexer.New(line)
 
-		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
+		for tok := l.NextToken(); tok.Type != token.TokenType(token.EOF); tok = l.NextToken() {
 			fmt.Printf("%+v\n", tok)
 		}
 	}
