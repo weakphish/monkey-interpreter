@@ -17,6 +17,7 @@ type Expression interface {
 }
 
 // "This Program node is going to be the root node of every AST our parser produces"
+// Program implements the Node interface, so it is a valid Node.
 type Program struct {
 	Statements []Statement
 }
@@ -29,7 +30,8 @@ func (p *Program) TokenLiteral() string {
 	}
 }
 
-// Let Statements
+// Definition of a node for Let Statements
+// Implements the Statement interface, so it is a valid Statement Node.
 type LetStatement struct {
 	Token token.Token
 	Name  *Identifier // Holds the identifier of the binding
@@ -41,7 +43,9 @@ func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
-// Identifier
+// Definition of a node for Identifiers
+// Implements the Expression interface, so it is a valid Expression Node.
+
 type Identifier struct {
 	Token token.Token // the token.IDENT token
 	Value string
