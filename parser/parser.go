@@ -6,6 +6,13 @@ import (
 	"github.com/weakphish/monkey-interpreter/token"
 )
 
+/*
+ * The basic idea of recursive-descent parsing is that there is an entry point,
+ * parseProgram, that constructs the root node of the AST. "It then builds
+ * child nodes, the statements, by calling other functions that know which
+ * AST node to construct based on the current token."
+ */
+
 type Parser struct {
 	l *lexer.Lexer
 
