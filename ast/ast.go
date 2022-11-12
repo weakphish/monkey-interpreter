@@ -30,7 +30,7 @@ func (p *Program) TokenLiteral() string {
 	}
 }
 
-// Definition of a node for Let Statements
+// Definition of a node for Let Statements.
 // Implements the Statement interface, so it is a valid Statement Node.
 type LetStatement struct {
 	Token token.Token
@@ -43,9 +43,8 @@ func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
-// Definition of a node for Identifiers
+// Definition of a node for Identifiers.
 // Implements the Expression interface, so it is a valid Expression Node.
-
 type Identifier struct {
 	Token token.Token // the token.IDENT token
 	Value string
