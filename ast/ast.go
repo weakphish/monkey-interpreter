@@ -43,6 +43,18 @@ func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
+// Definition of a node for Return Statements
+// Implements the Statement interface, so it is a valid Statement Node.
+type ReturnStatement struct {
+	Token       token.Token // the 'return' Token
+	ReturnValue Expression
+}
+
+func (rs *ReturnStatement) statementNode() {}
+func (rs *ReturnStatement) TokenLiteral() string {
+	return rs.Token.Literal
+}
+
 // Definition of a node for Identifiers.
 // Implements the Expression interface, so it is a valid Expression Node.
 type Identifier struct {
