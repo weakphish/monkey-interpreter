@@ -6,6 +6,7 @@ import (
 	"github.com/weakphish/monkey-interpreter/token"
 )
 
+// Node interface defines the functions that should accompany a Node in the AST.
 type Node interface {
 	TokenLiteral() string // used for debugging / testing
 	String() string
@@ -21,7 +22,7 @@ type Expression interface {
 	expressionNode()
 }
 
-// "This Program node is going to be the root node of every AST our parser produces"
+// Program "This Program node is going to be the root node of every AST our parser produces"
 // Program implements the Node interface, so it is a valid Node.
 type Program struct {
 	Statements []Statement
@@ -45,7 +46,7 @@ func (p *Program) String() string {
 	return out.String()
 }
 
-// Definition of a node for Expression Statements
+// ExpressionStatement Definition of a node for Expression Statements
 // Implements the Statement interface
 type ExpressionStatement struct {
 	Token      token.Token // the first token of the Expression
@@ -64,7 +65,7 @@ func (es *ExpressionStatement) String() string {
 	return ""
 }
 
-// Definition of a node for Let Statements.
+// LetStatement Definition of a node for Let Statements.
 // Implements the Statement interface, so it is a valid Statement Node.
 type LetStatement struct {
 	Token token.Token
@@ -92,7 +93,7 @@ func (ls *LetStatement) String() string {
 	return out.String()
 }
 
-// Definition of a node for Return Statements
+// ReturnStatement Definition of a node for Return Statements
 // Implements the Statement interface, so it is a valid Statement Node.
 type ReturnStatement struct {
 	Token       token.Token // the 'return' Token
@@ -117,7 +118,7 @@ func (rs *ReturnStatement) String() string {
 	return out.String()
 }
 
-// Definition of a node for Identifiers.
+// Identifier Definition of a node for Identifiers.
 // Implements the Expression interface, so it is a valid Expression Node.
 type Identifier struct {
 	Token token.Token // the token.IDENT token
@@ -131,6 +132,7 @@ func (i *Identifier) TokenLiteral() string {
 
 func (i *Identifier) String() string { return i.Value }
 
+// IntegerLiterali node for an IntegerLiteral
 type IntegerLiteral struct {
 	Token token.Token
 	Value int64
@@ -139,3 +141,25 @@ type IntegerLiteral struct {
 func (il *IntegerLiteral) expressionNode()      {}
 func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
 func (il *IntegerLiteral) String() string       { return il.Token.Literal }
+
+// PrefixExpression definition of a node for PrefixExpression
+type PrefixExpression struct {
+	Token    token.Token // prefix token i.e. !
+	Operator string
+	Right    Expression
+}
+
+func (pe *PrefixExpression) expressionNode() {}
+func (pe *PrefixExpression) TokenLiteral() string {
+	return pe.Token.Literal
+}
+func (pe *PrefixExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("(")
+	out.WriteString(pe.Operator)
+	out.WriteString(pe.Right.String())
+	out.WriteString(")")
+
+	return out.String()
+}
