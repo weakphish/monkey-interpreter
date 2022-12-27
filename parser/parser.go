@@ -22,6 +22,18 @@ const (
 	CALL
 )
 
+// Associate token types with their parsing precedence
+var precedences = map[token.TokenType]int{
+	token.EQ:       EQUALS,
+	token.NEQ:      EQUALS,
+	token.LT:       LESSGREATER,
+	token.GT:       LESSGREATER,
+	token.PLUS:     SUM,
+	token.MINUS:    SUM,
+	token.SLASH:    PRODUCT,
+	token.ASTERISK: PRODUCT,
+}
+
 /*
  * The basic idea of recursive-descent parsing is that there is an entry point,
  * parseProgram, that constructs the root node of the AST. "It then builds
@@ -94,11 +106,13 @@ func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 }
 
 func (p *Parser) parseExpression(precedence int) ast.Expression {
+	// Get the appropriate prefix parsing function for the current token
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
 		p.noPrefixParseFnError(p.curToken.Type)
 		return nil
 	}
+
 	leftExp := prefix()
 
 	return leftExp
@@ -201,6 +215,23 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.peekError(t)
 		return false
 	}
+}
+
+// Peek the precedence of the next token. If it's not in the map of precedences,
+// return LOWEST by default
+func (p *Parser) peekPrecedence() int {
+	if p, ok := precedences[p.peekToken.Type]; ok {
+		return p
+	}
+	return LOWEST
+}
+
+// Get the current token's precedence
+func (p *Parser) curPrecedence() int {
+	if p, ok := precedences[p.curToken.Type]; ok {
+		return p
+	}
+	return LOWEST
 }
 
 // "Log" a new peek-related error to the Parser's error array
